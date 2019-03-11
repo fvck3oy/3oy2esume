@@ -204,15 +204,17 @@ class Apriori extends Component {
 				<div className="mt-5">
 					<h3 className="">Frequent ItemSet ({freqSet.length})</h3>
 					<table className="table">
-					<tr><th>ItemSet</th>
-					<th>Support(%)</th>
-					</tr>
+						<tr>
+							<th>ItemSet</th>
+							<th>Support(%)</th>
+						</tr>
 						{freqSet
 							.sort((a, b) => (a.item.length < b.item.length ? -1 : b.item.length > a.item.length ? 1 : 0))
-							.map((data ,index)=> (
+							.map((data, index) => (
 								<tr key={data.key}>
-
-									<td className="td-effect">{index+1}. [ {data.item.join(', ')} ]</td>
+									<td className="td-effect">
+										{index + 1}. [ {data.item.join(', ')} ]
+									</td>
 									<td className="td-effect">{data.val}%</td>
 								</tr>
 							))}
@@ -222,22 +224,34 @@ class Apriori extends Component {
 				<div className="mt-5">
 					<h3 className="">Strong Association Rule ({strongSet.length})</h3>
 					<table className="table">
-					<tr><th>ItemSet (x)</th>
-					<th></th>
-					<th>ItemSet (y)</th>
-					<th>Support(%)</th>
-					</tr>
+						<tr>
+							<th>ItemSet (x)</th>
+							<th />
+							<th>ItemSet (y)</th>
+							<th>Support(%)</th>
+						</tr>
 						{strongSet
 							.sort((a, b) => (a.x.length < b.x.length ? -1 : b.x.length > a.x.length ? 1 : 0))
 							.map((data, index) => (
 								<tr key={index}>
-									<td className="td-effect">{index+1}. [ {data.x.join(', ')} ]</td>
+									<td className="td-effect">
+										{index + 1}. [ {data.x.join(', ')} ]
+									</td>
 									<td>=></td>
 									<td className="td-effect">[ {data.y.join(', ')} ]</td>
 									<td className="td-effect">{data.val}%</td>
 								</tr>
 							))}
 					</table>
+				</div>
+				<div className="row mt-5">
+					<div className="dev p-3 outline-effect col-12">
+						Dev by
+						<br />
+						<a href="https://www.facebook.com/boy.reallife">Pumin Swangjang 5835512102 CoE</a>
+						<br />
+						<a href="https://www.facebook.com/sarunsonice">Sarunporn Srisaeng 5835512021 CoE</a>
+					</div>
 				</div>
 			</div>
 		)

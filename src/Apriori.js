@@ -1,71 +1,234 @@
 import React, { Component } from 'react'
 
 import './App.css'
-import '../node_modules/bootstrap/dist/css/bootstrap.min.css'
-import { BrowserRouter as Router } from 'react-router-dom'
-
+import 'bootstrap/dist/css/bootstrap.min.css'
 
 class Apriori extends Component {
-  componentDidMount(){
-    document.title = "Apriori"
-  }
+	timer = null
+	state = {
+		input: 'Apple, Beer, Cereal, Diapers, Eggs',
+		data: 'Apple, Cereal, Diapers\nBeer, Cereal, Eggs\nApple, Beer, Cereal, Eggs\nBeer, Eggs',
+		minSup: 50,
+		minCon: 50,
+		freqSet: [],
+		strongSet: []
+	}
+
+	isSubset = (arr, items) => {
+		let match = true
+		items.forEach(item => {
+			if (arr.indexOf(item) === -1) match = false
+		})
+		return match
+	}
+
+	getCombinations = arr => {
+		let result = []
+		let f = (prefix, arr) => {
+			for (let i = 0; i < arr.length; i++) {
+				result.push(prefix.concat(arr[i]))
+				f(prefix.concat(arr[i]), arr.slice(i + 1))
+			}
+		}
+		f([], arr)
+		return result
+	}
+
+	getPermutations = arr => {
+		let result = []
+		arr.forEach(x => {
+			arr.forEach(y => {
+				let match = false
+				for (let i = 0; i < x.length; i++) {
+					if (y.indexOf(x.slice(i, i + 1).pop()) !== -1) match = true
+				}
+				if (!match) result.push({ x, y })
+			})
+		})
+		return result
+	}
+
+	getKey = arr => {
+		return arr.sort((a, b) => (a < b ? -1 : b > a ? 1 : 0)).join('')
+	}
+
+	getVal = (arr, key) => {
+		for (let i = 0; i < arr.length; i++) {
+			if (arr[i].key == key) {
+				return arr[i].val
+			}
+		}
+		return 0
+	}
+
+	makeFreq = (comb, data, min = 50) => {
+		let freq = []
+		comb.forEach(item => {
+			const key = this.getKey(item)
+			freq.push({ key, item, val: 0 })
+
+			data.forEach(line => {
+				if (this.isSubset(line, item)) {
+					let match = false
+					for (let i = 0; i < freq.length; i++) {
+						if (freq[i].key === key) {
+							freq[i].val += (1 / data.length) * 100
+							match = true
+						}
+					}
+				}
+			})
+		})
+		return freq.filter(item => item.val >= min)
+	}
+
+	makeStrong = (perm, freq, min = 50) => {
+		let strong = []
+		perm.forEach(item => {
+			const { x, y } = item
+			const freqA = this.getVal(freq, this.getKey(x.concat(y)))
+			const freqB = this.getVal(freq, this.getKey(x))
+
+			let val = Math.round((freqA / freqB) * 100) || 0
+			console.log(x.join(''), y.join(''), ' | ', this.getKey(x.concat(y)), this.getKey(y), freqA, freqB, val)
+			strong.push({ x, y, val })
+		})
+		console.log(strong)
+		return strong.filter(item => item.val >= min)
+	}
+
+	calc = () => {
+		this.setState(
+			{
+				freqSet: [],
+				strongSet: []
+			},
+			() => {
+				const { input, data, minSup, minCon } = this.state
+				const INPUT = input.split(',').map(item => item.trim())
+				const DATA = data.split('\n').map(line => line.split(',').map(item => item.trim()))
+
+				const COMBINATION = this.getCombinations(INPUT)
+				const PERMUTATION = this.getPermutations(COMBINATION)
+
+				const freqSet = this.makeFreq(COMBINATION, DATA, minSup)
+				const strongSet = this.makeStrong(PERMUTATION, freqSet, minCon)
+
+				// console.log(COMBINATION.length, PERMUTATION.length, freqSet.length, strongSet.length)
+
+				this.setState({
+					freqSet,
+					strongSet
+				})
+			}
+		)
+	}
+
+	componentDidMount() {
+		document.title = 'Apriori'
+		this.calc()
+	}
+
+	handleChange = e => {
+		const { id, value } = e.target
+
+		clearTimeout(this.timer)
+		this.timer = setTimeout(() => this.calc(), 300)
+
+		this.setState({
+			[id]: value
+		})
+	}
+
 	render() {
+		const { input, data, minSup, minCon, freqSet, strongSet } = this.state
 		return (
-			<div class="container">
-				<div class="row">
-        <h1>Apriori</h1>
-					<div class="col-12">
-						<div  class="">
-							<div class="row mt-3 mb-3">
-								<div class="col-6">
+			<div className="container">
+				<div className="row">
+					<h1>Apriori</h1>
+					<div className="col-12">
+						<div className="">
+							<div className="row mt-3 mb-3">
+								<div className="col-6">
 									<label>Number of Transaction</label>
-									<input type="number" id="" class="outline-effect" placeholder="please fill number of transaction" value="4" />
+									<input
+										type="text"
+										className="outline-effect"
+										placeholder="Input Range"
+										id="input"
+										onChange={this.handleChange}
+										value={input}
+									/>
 								</div>
 							</div>
-							<div class="mt-3 mb-3">
+							<div className="mt-3 mb-3">
 								<label>ItemSet</label>
 								<br />
-								<textarea id="itemSet" class="outline-effect">
-									Apple,Cereal,Diapers Beer,Cereal,Eggs&#10;Apple,Beer,Cereal,Eggs&#10;Beer,Eggs
-								</textarea>
+								<textarea className="outline-effect" id="data" onChange={this.handleChange} value={data} />
 							</div>
-							<div class="support-input row mt-3 mb-3">
-								<div class="col-6">
-									<label for="inline_field">Min Support </label>
-									<input type="number" id="minSup" class="outline-effect" placeholder="please fill number (%)" value="50" />
+							<div className="support-input row mt-3 mb-3">
+								<div className="col-6">
+									<label htmlFor="inline_field">Min Support</label>
+									<input
+										type="number"
+										className="outline-effect"
+										placeholder="please fill number (%)"
+										id="minSup"
+										onChange={this.handleChange}
+										value={minSup}
+									/>
 								</div>
 
-								<div class="col-6">
-									<label for="warning_field">Con Support </label>
-									<input type="number" id="minCon" class="outline-effect" placeholder="please fill number (%)" value="50" />
+								<div className="col-6">
+									<label htmlFor="warning_field">Con Support</label>
+									<input
+										type="number"
+										className="outline-effect"
+										placeholder="please fill number (%)"
+										id="minCon"
+										onChange={this.handleChange}
+										value={minCon}
+									/>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 
-				<div class="mt-3 mb-3">
-					<span class="btn-cal" onclick="cal();">
+				{/* <div className="mt-3 mb-3">
+					<span className="btn-cal" onClick={e => this.calc()}>
 						Calculate
 					</span>
+				</div> */}
+
+				<div className="mt-5">
+					<h3 className="">Frequent ItemSet ({freqSet.length})</h3>
+					<table className="table">
+						{freqSet
+							.sort((a, b) => (a.item.length < b.item.length ? -1 : b.item.length > a.item.length ? 1 : 0))
+							.map(data => (
+								<tr key={data.key}>
+									<td>[ {data.item.join(', ')} ]</td>
+									<td>{data.val}%</td>
+								</tr>
+							))}
+					</table>
 				</div>
 
-				<div class="mt-5">
-					<h3 class="">Frequent ItemSet</h3>
-					<div id="texts" class="">
-						<div class="">
-							<div id="result1" />
-						</div>
-					</div>
-				</div>
-
-				<div class="mt-5">
-					<h3 class="">Strong Association Rule</h3>
-					<div id="texts" class="">
-						<div class="">
-							<div id="result2" />
-						</div>
-					</div>
+				<div className="mt-5">
+					<h3 className="">Strong Association Rule ({strongSet.length})</h3>
+					<table className="table">
+						{strongSet
+							.sort((a, b) => (a.x.length < b.x.length ? -1 : b.x.length > a.x.length ? 1 : 0))
+							.map((data, index) => (
+								<tr key={index}>
+									<td>[ {data.x.join(', ')} ]</td>
+									<td>=></td>
+									<td>[ {data.y.join(', ')} ]</td>
+									<td>{data.val}%</td>
+								</tr>
+							))}
+					</table>
 				</div>
 			</div>
 		)

@@ -150,7 +150,7 @@ class Apriori extends Component {
 						<div className="">
 							<div className="row mt-3 mb-3">
 								<div className="col-6">
-									<label>Number of Transaction</label>
+									<label>Items</label>
 									<input
 										type="text"
 										className="outline-effect"
@@ -204,12 +204,16 @@ class Apriori extends Component {
 				<div className="mt-5">
 					<h3 className="">Frequent ItemSet ({freqSet.length})</h3>
 					<table className="table">
+					<tr><th>ItemSet</th>
+					<th>Support(%)</th>
+					</tr>
 						{freqSet
 							.sort((a, b) => (a.item.length < b.item.length ? -1 : b.item.length > a.item.length ? 1 : 0))
-							.map(data => (
+							.map((data ,index)=> (
 								<tr key={data.key}>
-									<td>[ {data.item.join(', ')} ]</td>
-									<td>{data.val}%</td>
+
+									<td className="td-effect">{index+1}. [ {data.item.join(', ')} ]</td>
+									<td className="td-effect">{data.val}%</td>
 								</tr>
 							))}
 					</table>
@@ -218,14 +222,19 @@ class Apriori extends Component {
 				<div className="mt-5">
 					<h3 className="">Strong Association Rule ({strongSet.length})</h3>
 					<table className="table">
+					<tr><th>ItemSet (x)</th>
+					<th></th>
+					<th>ItemSet (y)</th>
+					<th>Support(%)</th>
+					</tr>
 						{strongSet
 							.sort((a, b) => (a.x.length < b.x.length ? -1 : b.x.length > a.x.length ? 1 : 0))
 							.map((data, index) => (
 								<tr key={index}>
-									<td>[ {data.x.join(', ')} ]</td>
+									<td className="td-effect">{index+1}. [ {data.x.join(', ')} ]</td>
 									<td>=></td>
-									<td>[ {data.y.join(', ')} ]</td>
-									<td>{data.val}%</td>
+									<td className="td-effect">[ {data.y.join(', ')} ]</td>
+									<td className="td-effect">{data.val}%</td>
 								</tr>
 							))}
 					</table>

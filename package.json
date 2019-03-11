@@ -18,7 +18,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "publish": "cp -rf ./build/** ../public_html"
+    "publish": "cp -rf ./build/** ~/public_html"
   },
   "eslintConfig": {
     "extends": "react-app"

@@ -49,6 +49,7 @@ class Apriori extends Component {
 	}
 
 	getKey = arr => {
+		//เอา array ไปทำเป็น string จาห AB , BA
 		return arr.sort((a, b) => (a < b ? -1 : b > a ? 1 : 0)).join('')
 	}
 
@@ -149,7 +150,7 @@ class Apriori extends Component {
 					<div className="col-12">
 						<div className="">
 							<div className="row mt-3 mb-3">
-								<div className="col-6">
+								<div className="col-12">
 									<label>Items</label>
 									<input
 										type="text"

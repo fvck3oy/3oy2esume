@@ -207,7 +207,7 @@ class Apriori extends Component {
 					<table className="table">
 						<tr>
 							<th>ItemSet</th>
-							<th>Support(%)</th>
+							<th>Support ( % ) </th>
 						</tr>
 						{freqSet
 							.sort((a, b) => (a.item.length < b.item.length ? -1 : b.item.length > a.item.length ? 1 : 0))
@@ -226,10 +226,10 @@ class Apriori extends Component {
 					<h3 className="">Strong Association Rule ({strongSet.length})</h3>
 					<table className="table">
 						<tr>
-							<th>ItemSet (x)</th>
+							<th>ItemSet ( x )</th>
 							<th />
-							<th>ItemSet (y)</th>
-							<th>Support(%)</th>
+							<th>ItemSet ( y )</th>
+							<th>Support ( % )</th>
 						</tr>
 						{strongSet
 							.sort((a, b) => (a.x.length < b.x.length ? -1 : b.x.length > a.x.length ? 1 : 0))

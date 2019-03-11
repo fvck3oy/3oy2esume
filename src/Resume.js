@@ -21,13 +21,7 @@ class Resume extends Component {
 			console.log('test :', data[0])
 		})
 
-		await axios.get(`http://localhost:7777/api/getpsu`).then(res => {
-			console.log('data2 : ', res)
-			const { data2 } = res
-			// console.log('data0', data[0].title)
-			console.log('kuy :', data2)
-			this.setState({ data2 })
-		})
+	
 	}
 
 	componentDidMount() {

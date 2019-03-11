@@ -29,7 +29,7 @@ class EachGit extends Component {
 		console.log('check : ', this.state.check)
 
 		return (
-			<Col md={2}>
+			<Col md={3}>
 				<a href={link} className="mt-2 mb-2">
 					<div className="outline-effect  e-git mt-2 mb-2">
 						<i className={this.state.check}>&nbsp;</i>

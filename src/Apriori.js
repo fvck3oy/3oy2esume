@@ -169,7 +169,7 @@ class Apriori extends Component {
 							</div>
 							<div className="support-input row mt-3 mb-3">
 								<div className="col-6">
-									<label htmlFor="inline_field">Min Support</label>
+									<label htmlFor="inline_field">Min Support ( % )</label>
 									<input
 										type="number"
 										className="outline-effect"
@@ -181,7 +181,7 @@ class Apriori extends Component {
 								</div>
 
 								<div className="col-6">
-									<label htmlFor="warning_field">Con Support</label>
+									<label htmlFor="warning_field">Con Support ( % )</label>
 									<input
 										type="number"
 										className="outline-effect"

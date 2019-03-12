@@ -40,7 +40,7 @@ class Resume extends Component {
 					<div className="fig outline-effect-profile m-3">
 						<img
 							src="https://scontent.fbkk8-3.fna.fbcdn.net/v/t1.0-9/1914830_921993561221927_4622623895927560860_n.jpg?_nc_cat=111&_nc_ht=scontent.fbkk8-3.fna&oh=d3e5f4c334269cbba236d10a4132ea4e&oe=5CB88D44"
-							className="pic-profile"
+							className="pic-profile img-responsive"
 							alt="profile"
 						/>
 					</div>

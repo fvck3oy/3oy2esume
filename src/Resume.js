@@ -4,6 +4,7 @@ import '../node_modules/bootstrap/dist/css/bootstrap.min.css'
 import { Row, Col, Container } from 'reactstrap'
 import axios from 'axios'
 import EachGit from './EachGit'
+import SunFlower from './SunFlower.mp3'
 
 class Resume extends Component {
 	constructor(props) {
@@ -28,10 +29,14 @@ class Resume extends Component {
 	}
 
 	render() {
+		var audio = new Audio(SunFlower)
+		audio.play()
 		return (
 			<Container>
 				<Row className="des-profile intro m-1 justify-content-center">
 					<h3>BOY RESUME</h3>
+
+
 					{/* <h1 class="testhover animated infinite bounce delay-2s">Example</h1> */}
 				</Row>
 				<Row className="d-flex intro des-profile justify-content-center">

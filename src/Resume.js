@@ -20,8 +20,6 @@ class Resume extends Component {
 			this.setState({ data: data })
 			console.log('test :', data[0])
 		})
-
-	
 	}
 
 	componentDidMount() {
@@ -39,7 +37,7 @@ class Resume extends Component {
 				<Row className="d-flex intro des-profile justify-content-center">
 					<div className="fig outline-effect-profile m-3">
 						<img
-							src="https://scontent.fbkk8-3.fna.fbcdn.net/v/t1.0-9/1914830_921993561221927_4622623895927560860_n.jpg?_nc_cat=111&_nc_ht=scontent.fbkk8-3.fna&oh=d3e5f4c334269cbba236d10a4132ea4e&oe=5CB88D44"
+							src="https://scontent.fbkk5-6.fna.fbcdn.net/v/t1.0-9/56551774_2118730481548223_6680520646209830912_n.jpg?_nc_cat=102&_nc_ht=scontent.fbkk5-6.fna&oh=57a686aac4adf56148b98a29e002197a&oe=5D5C690F"
 							className="pic-profile img-responsive"
 							alt="profile"
 						/>
